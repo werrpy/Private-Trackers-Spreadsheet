@@ -21,6 +21,21 @@ fs.readdir(directoryPath, function (err, files) {
         try {
             let fileContents = fs.readFileSync(path.join(directoryPath, file), 'utf8');
             let data = yaml.safeLoad(fileContents, {skipInvalid: true});
+
+            let lines
+            // split by line
+            lines = fileContents.split('\n')
+            
+            // filter only comments
+            lines = lines.filter(el => {
+                return el.startsWith('#') && !el.startsWith('#  ') && !el.includes("engine")
+            });
+            console.log(lines)
+
+            /*if (lastLine.startsWith('#')) {
+                console.log(lastLine)
+            }*/
+
             //console.log(data);
             if (data.type == 'private') {
                 let tracker = {
